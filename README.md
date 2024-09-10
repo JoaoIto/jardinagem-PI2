@@ -1,3 +1,27 @@
+# Projeto Integrador II
+
+A disciplina de extensão consiste em construir um sistema ou processo que se aplique a um projeto real de um cliente, que deve sistematizar, digitalizar, agilizar, facilitar a vida do cliente a partir da tecnologia e inovação.
+
+---
+
+## Cliente escolhido: 
+***Arquitetos Associados -Arquitetura e Construção***![Jardinagem prestadora de serviços](./.github/images/image.png)
+
+- ### **Motivação**:
+
+Em uma reunião realizada no dia 11 de março de 2024, com o renomado arquiteto e representante da Tom Reis Arquitetos LTDA, Tom Reis, foram identificadas necessidades cruciais para a modernização e otimização das operações do escritório de arquitetura. O arquiteto expressou o desejo de estabelecer uma presença online robusta e interativa, que não apenas refletisse a qualidade e a inovação de seus projetos, mas também proporcionasse uma experiência transparente e envolvente para seus clientes em potencial.
+
+- ### **Objetivo**: 
+
+Desenvolver e implementar um sistema web para o escritório de arquitetura, ***Tom Reis Arquitetos LTDA***, que permita aos clientes acompanhar o progresso de suas obras em andamento, fornecendo acesso a imagens, vídeos e relatórios inseridos pelo administrador. 
+
+Além disso, o sistema irá facilitar o armazenamento de documentos relacionados aos projetos, criar uma “Área do Funcionário” para colaboração interna e incluir páginas de portfólio da empresa e de apresentação de equipe.
+
+---
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

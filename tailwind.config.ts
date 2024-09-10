@@ -11,6 +11,13 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        verde: {
+          claro: "#E6F2E6",
+          normal: "#028003",
+          normalHover: "#027303",
+          normalActive: "#026602",
+          escuro: "#026002"
+        }
       },
     },
   },
