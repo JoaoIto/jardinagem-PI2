@@ -21,6 +21,7 @@ export default function Home() {
               variant="contained"
               color="primary"
               className="bg-verde-escuro"
+              href="/auth/cadastrar"
             >
               Cadastrar-se
             </Button>
@@ -28,6 +29,7 @@ export default function Home() {
               variant="contained"
               color="primary"
               className="bg-verde-normal hover:bg-verde-normalHover active:bg-verde-normalActive"
+              href="/auth/login"
             >
               Login
             </Button>
@@ -42,6 +44,7 @@ export default function Home() {
               variant="contained"
               color="primary"
               className="bg-verde-normal hover:bg-verde-normalHover active:bg-verde-normalActive"
+              href="/solicitar-servico"
             >
               Solicitar Serviço
             </Button>
