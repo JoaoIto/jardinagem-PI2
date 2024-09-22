@@ -2,18 +2,6 @@ import React from 'react';
 import { Card, CardContent, Typography, IconButton, Divider } from '@mui/material';
 import { Visibility, Edit, CheckCircle, Cancel, ArrowUpward } from '@mui/icons-material';
 
-// Tipagem de um serviço
-interface Servico {
-  id: number;
-  cliente: string;
-  telefone: string;
-  descricao: string;
-  valor: string;
-  data?: string;
-  hora?: string;
-  status: 'concluido' | 'em-atendimento' | 'aprovado' | 'aguardando-aprovacao';
-}
-
 // Função principal que renderiza a tela de agenda de serviços
 export default function AgendaServicos() {
   const servicos: Servico[] = [
