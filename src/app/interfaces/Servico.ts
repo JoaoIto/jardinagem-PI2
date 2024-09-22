@@ -1,5 +1,5 @@
 // Tipagem de um serviço
-interface Servico {
+export interface Servico {
     id: number;
     cliente: string;
     telefone: string;

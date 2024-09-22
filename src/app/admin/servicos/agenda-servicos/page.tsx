@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography, IconButton, Divider } from '@mui/material';
 import { Visibility, Edit, CheckCircle, Cancel, ArrowUpward } from '@mui/icons-material';
+import { Servico } from '@/app/interfaces/Servico';
 
 // Função principal que renderiza a tela de agenda de serviços
 export default function AgendaServicos() {
