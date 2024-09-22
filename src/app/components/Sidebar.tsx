@@ -66,10 +66,10 @@ export default function Sidebar() {
               <ListItemText primary="Acompanhar Serviços" />
             </ListItem>
           </Link>
-          <Link href="/agendar-servicos" passHref>
+          <Link href="/admin/servicos/agenda-servicos" passHref>
             <ListItem component="a">
               <BuildIcon style={{ marginRight: 8 }} />
-              <ListItemText primary="Agendar Serviços" />
+              <ListItemText primary="Agenda de Serviços" />
             </ListItem>
           </Link>
           <Link href="/admin/servicos/cadastrar-servicos" passHref>
