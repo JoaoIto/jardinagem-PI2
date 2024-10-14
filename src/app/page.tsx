@@ -21,7 +21,7 @@ import servico4 from "@/app/assets/imgs/servico4.png";
 export default function Home() {
   const [isEmpresa, setIsEmpresa] = useState(false);
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsEmpresa(event.target.checked);
   };
   
