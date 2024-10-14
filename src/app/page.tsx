@@ -1,3 +1,4 @@
+"use client";
 import {
   Button,
   Card,
@@ -7,11 +8,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import "swiper/swiper-bundle.css";
+import React, { useState } from "react";
 import Image from "next/image";
 import logo from "@/app/assets/logo.png";
+import servico1 from "@/app/assets/imgs/servico1.png";
+import servico2 from "@/app/assets/imgs/servico2.png";
+import servico3 from "@/app/assets/imgs/servico3.png";
+import servico4 from "@/app/assets/imgs/servico4.png";
+
 
 export default function Home() {
+  const [isEmpresa, setIsEmpresa] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setIsEmpresa(event.target.checked);
+  };
+  
   return (
     <div className="flex flex-col items-center justify-center space-y-8  bg-verde-background">
       {/* Navbar */}
@@ -33,7 +46,7 @@ export default function Home() {
           <a
             href="https://wa.me/5563984256317"
             target="_blank"
-            className="relative font-bold text-green-600 font-bold hover:underline before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-green-700 before:transition-all before:duration-300 hover:before:w-full"
+            className="relative font-bold text-green-600 hover:underline before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-green-700 before:transition-all before:duration-300 hover:before:w-full"
           >
             Whatsapp
           </a>
@@ -51,35 +64,54 @@ export default function Home() {
         <Typography variant="h4" className="font-bold text-gray-700">
           Conheça o nosso trabalho
         </Typography>
-        <div className="flex justify-center mt-8 space-x-6">
-          <Image
-            src="/image1.jpg"
-            alt="Trabalho 1"
-            width={200}
-            height={150}
-            className="rounded-lg"
-          />
-          <Image
-            src="/image2.jpg"
-            alt="Trabalho 2"
-            width={200}
-            height={150}
-            className="rounded-lg"
-          />
-          <Image
-            src="/image3.jpg"
-            alt="Trabalho 3"
-            width={200}
-            height={150}
-            className="rounded-lg"
-          />
-          <Image
-            src="/image4.jpg"
-            alt="Trabalho 4"
-            width={200}
-            height={150}
-            className="rounded-lg"
-          />
+        <div className="flex gap-4 mt-8 w-full">
+          <Card className="w-48 p-4">
+            <Image
+              src={servico1}
+              alt="Corte de Grama"
+              width={192}
+              height={192}
+            />
+            <CardContent>
+              <Typography variant="h6" className="text-center">
+                Corte de Grama
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card className="w-48 p-4">
+            <Image
+              src={servico2}
+              alt="Poda de Plantas"
+              width={192}
+              height={192}
+            />
+            <CardContent>
+              <Typography variant="h6" className="text-center">
+                Poda de Plantas
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card className="w-48 p-4">
+            <Image
+              src={servico3}
+              alt="Iluminação do Jardim"
+              width={192}
+              height={192}
+            />
+            <CardContent>
+              <Typography variant="h6" className="text-center">
+                Iluminação do Jardim
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card className="w-48 p-4">
+            <Image src={servico4} alt="Paisagismo" width={192} height={192} />
+            <CardContent>
+              <Typography variant="h6" className="text-center">
+                Paisagismo
+              </Typography>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -108,63 +140,38 @@ export default function Home() {
         >
           Nossos serviços
         </Typography>
-        <div className="flex justify-center mt-8 space-x-6">
-          <Card className="w-48">
-            <Image
-              src="/service1.jpg"
-              alt="Corte de Grama"
-              width={192}
-              height={192}
-              className="rounded-full"
-            />
-            <CardContent>
-              <Typography variant="h6" className="text-center">
-                Corte de Grama
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card className="w-48">
-            <Image
-              src="/service2.jpg"
-              alt="Poda de Plantas"
-              width={192}
-              height={192}
-              className="rounded-full"
-            />
-            <CardContent>
-              <Typography variant="h6" className="text-center">
-                Poda de Plantas
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card className="w-48">
-            <Image
-              src="/service3.jpg"
-              alt="Iluminação do Jardim"
-              width={192}
-              height={192}
-              className="rounded-full"
-            />
-            <CardContent>
-              <Typography variant="h6" className="text-center">
-                Iluminação do Jardim
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card className="w-48">
-            <Image
-              src="/service4.jpg"
-              alt="Paisagismo"
-              width={192}
-              height={192}
-              className="rounded-full"
-            />
-            <CardContent>
-              <Typography variant="h6" className="text-center">
-                Paisagismo
-              </Typography>
-            </CardContent>
-          </Card>
+        <div className="flex justify-center gap-4 mt-8">
+          <Image
+            src={servico1}
+            alt="Corte de Grama"
+            width={192}
+            height={192}
+            className="rounded-full"
+          />
+
+          <Image
+            src={servico2}
+            alt="Poda de Plantas"
+            width={192}
+            height={192}
+            className="rounded-full"
+          />
+
+          <Image
+            src={servico3}
+            alt="Iluminação do Jardim"
+            width={192}
+            height={192}
+            className="rounded-full"
+          />
+
+          <Image
+            src={servico4}
+            alt="Paisagismo"
+            width={192}
+            height={192}
+            className="rounded-full"
+          />
         </div>
       </section>
 
@@ -176,38 +183,72 @@ export default function Home() {
         >
           Faça seu agendamento conosco
         </Typography>
-        <div className="max-w-md mx-auto mt-8 bg-green-200 p-8 rounded-lg shadow-md">
-          <FormControlLabel
-            control={<Checkbox name="empresa" />}
-            label="Empresa"
+    <div className="max-w-md mx-auto mt-8 bg-green-200 p-8 rounded-lg shadow-md">
+      <Typography variant="h6" className="text-start font-bold text-gray-700">
+        Preencha as informações
+      </Typography>
+
+      {/* Checkbox para Empresa */}
+      <FormControlLabel
+        className="text-gray-700"
+        control={
+          <Checkbox
+            name="empresa"
+            checked={isEmpresa}
+            onChange={handleCheckboxChange}
           />
-          <TextField
-            label="Nome"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Telefone"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Serviço"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <Button
-            variant="contained"
-            color="success"
-            fullWidth
-            className="mt-4"
-          >
-            Salvar
-          </Button>
-        </div>
+        }
+        label="Empresa"
+      />
+
+      {/* Campo Nome */}
+      <TextField
+        label="Nome"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        placeholder="Ex: João Silva"
+      />
+
+      {/* Campo Telefone com placeholder */}
+      <TextField
+        label="Telefone"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        placeholder="Ex: (11) 98765-4321"
+      />
+
+      {/* Campo Serviço */}
+      <TextField
+        label="Serviço"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        placeholder="Ex: Corte de Grama"
+      />
+
+      {/* Campo CNPJ Condicional */}
+      {isEmpresa && (
+        <TextField
+          label="CNPJ"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          placeholder="Ex: 12.345.678/0001-99"
+        />
+      )}
+
+      {/* Botão Salvar */}
+      <Button
+        variant="contained"
+        color="success"
+        fullWidth
+        className="mt-4"
+      >
+        Salvar
+      </Button>
+    </div>
       </section>
 
       {/* Footer */}
