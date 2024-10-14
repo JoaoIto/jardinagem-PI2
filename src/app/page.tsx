@@ -252,8 +252,9 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-gray-800 text-white py-6 mt-8">
-        <div className="max-w-6xl mx-auto flex justify-between px-4">
+      <footer className="w-full text-gray-700 py-6 mt-8">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-4">
+        <Image src={logo} alt="Logo" width={150} height={50} />
           <div>
             <Typography variant="body2" className="font-bold">
               Copyright © 2024 L&L Prestadora de serviços.
