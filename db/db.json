@@ -1,51 +1,50 @@
 {
-    "servicos": [
-      {
-        "id": 1,
-        "cliente": "Maria de Lurdes",
-        "telefone": "(63) 98521-0362",
-        "descricao": "Iluminação do Jardim",
-        "valor": "R$350,00",
-        "status": "concluido"
-      },
-      {
-        "id": 5,
-        "cliente": "Maria de Lurdes",
-        "telefone": "(63) 98521-0362",
-        "descricao": "Iluminação do Jardim",
-        "valor": "R$350,00",
-        "status": "concluido"
-      },
-      {
-        "id": 2,
-        "cliente": "Maria de Lurdes",
-        "telefone": "(63) 98521-0362",
-        "descricao": "Iluminação do Jardim",
-        "valor": "R$350,00",
-        "data": "20/08/2024",
-        "hora": "15:00",
-        "status": "em-atendimento"
-      },
-      {
-        "id": 3,
-        "cliente": "João da Silva",
-        "telefone": "(63) 98521-0362",
-        "descricao": "Iluminação do Jardim",
-        "valor": "R$350,00",
-        "data": "20/08/2024",
-        "hora": "15:00",
-        "status": "aprovado"
-      },
-      {
-        "id": 4,
-        "cliente": "Maria de Lurdes",
-        "telefone": "(63) 98521-0362",
-        "descricao": "Iluminação do Jardim",
-        "valor": "R$1350,00",
-        "data": "21/08/2024",
-        "hora": "8:30",
-        "status": "aprovado"
-      }
-    ]
-  }
-  
+  "servicos": [
+    {
+      "id": "1",
+      "cliente": "Maria de Lurdes",
+      "telefone": "(63) 98521-0362",
+      "descricao": "Iluminação do Jardim",
+      "valor": "R$350,00",
+      "status": "cancelado"
+    },
+    {
+      "id": "5",
+      "cliente": "Maria de Lurdes",
+      "telefone": "(63) 98521-0362",
+      "descricao": "Iluminação do Jardim",
+      "valor": "R$350,00",
+      "status": "concluido"
+    },
+    {
+      "id": "2",
+      "cliente": "Maria de Lurdes",
+      "telefone": "(63) 98521-0362",
+      "descricao": "Iluminação do Jardim",
+      "valor": "R$350,00",
+      "data": "20/08/2024",
+      "hora": "15:00",
+      "status": "em-atendimento"
+    },
+    {
+      "cliente": "Teste",
+      "telefone": "(63) 98521-0362",
+      "status": "aprovado",
+      "valor": "300",
+      "data": "",
+      "hora": "",
+      "descricao": "SE~LKajdLKamDSÇLAMDÇAW",
+      "id": "3"
+    },
+    {
+      "id": "4",
+      "cliente": "Maria de Lurdes",
+      "telefone": "(63) 98521-0362",
+      "descricao": "Iluminação do Jardim",
+      "valor": "R$1350,00",
+      "data": "21/08/2024",
+      "hora": "8:30",
+      "status": "cancelado"
+    }
+  ]
+}

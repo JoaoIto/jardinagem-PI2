@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export default function CadastrarServico() {
+export default function EditarServico() {
   const router = useRouter();
   const [isEmpresa, setIsEmpresa] = useState(false);
   const [cliente, setCliente] = useState("");
@@ -26,10 +26,28 @@ export default function CadastrarServico() {
   const [data, setData] = useState("");
   const [hora, setHora] = useState("");
   const [observacao, setObservacao] = useState("");
+  const [servicoId, setServicoId] = useState<string | null>(null); // Novo estado para armazenar o ID do serviço
+
+  useEffect(() => {
+    const servicoToEdit = sessionStorage.getItem("servicoToEdit");
+    if (servicoToEdit) {
+      const parsedServico = JSON.parse(servicoToEdit);
+      setServicoId(parsedServico.id); // Armazena o ID do serviço
+      setCliente(parsedServico.cliente);
+      setTelefone(parsedServico.telefone);
+      setCnpj(parsedServico.cnpj || "");
+      setStatus(parsedServico.status);
+      setValor(parsedServico.valor);
+      setData(parsedServico.data || "");
+      setHora(parsedServico.hora || "");
+      setObservacao(parsedServico.descricao || "");
+      setIsEmpresa(!!parsedServico.cnpj);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const novoServico = {
+    const updatedServico = {
       cliente,
       telefone,
       cnpj: isEmpresa ? cnpj : undefined,
@@ -40,19 +58,20 @@ export default function CadastrarServico() {
       descricao: observacao,
     };
 
-    const response = await fetch("http://localhost:3001/servicos", {
-      method: "POST",
+    // Usa o ID do serviço na URL
+    const response = await fetch(`http://localhost:3001/servicos/${servicoId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(novoServico),
+      body: JSON.stringify(updatedServico),
     });
 
     if (response.ok) {
-      alert("Serviço cadastrado com sucesso!");
-      router.push('agenda-servicos')
+      alert("Serviço atualizado com sucesso!");
+      router.push("agenda-servicos")
     } else {
-      alert("Erro ao cadastrar serviço.");
+      alert("Erro ao atualizar serviço.");
     }
   };
 
@@ -61,7 +80,7 @@ export default function CadastrarServico() {
       <div className="flex flex-col items-center justify-center flex-1 py-8 px-4 lg:px-8">
         <div className="bg-white shadow-lg rounded-lg w-full max-w-2xl p-6">
           <Typography variant="h4" align="center" gutterBottom>
-            Agendar Serviço
+            Editar Serviço
           </Typography>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -181,7 +200,7 @@ export default function CadastrarServico() {
 
               <Grid item xs={12} className="flex justify-end">
                 <Button type="submit" variant="contained" color="primary" className="bg-verde">
-                  Agendar
+                  Atualizar
                 </Button>
               </Grid>
             </Grid>

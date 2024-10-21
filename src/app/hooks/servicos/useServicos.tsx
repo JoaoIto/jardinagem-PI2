@@ -31,5 +31,5 @@ export const useServicos = () => {
     fetchServicos();
   }, []);
 
-  return { servicos, loading, error };
+  return { servicos, setServicos, loading, error };
 };
