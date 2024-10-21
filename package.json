@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.0",
     "framer-motion": "^11.5.4",
     "jardinagem": "file:",
+    "json-server": "^1.0.0-beta.3",
     "lucide-react": "^0.453.0",
     "next": "^14.2.13",
     "react": "^18",
