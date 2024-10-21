@@ -10,19 +10,18 @@ const statusColors = {
   concluido: "border-green-500",
   "em-atendimento": "border-yellow-500",
   aprovado: "border-blue-500",
-  "aguardando-aprovacao": "border-orange-500",
 };
 
 const statusTitles = {
   concluido: "Concluídos",
   "em-atendimento": "Em atendimento",
   aprovado: "Aprovados",
-  "aguardando-aprovacao": "Aguardando Aprovação"
 };
 
 export default function AgendaServicos() {
   const { servicos } = useServicos();
-  const [visible, setVisible] = useState(true); // Estado para controlar a visibilidade
+  const [visible, setVisible] = useState(true); // Controla a visibilidade dos detalhes dos cards
+  const [isVerticalLayout, setIsVerticalLayout] = useState(true); // Alterna entre layout vertical e horizontal
 
   return (
     <div className="flex flex-col items-center justify-center bg-verde-background min-h-screen py-8">
@@ -30,12 +29,21 @@ export default function AgendaServicos() {
         Agenda de Serviços
       </Typography>
 
-      <div className="space-y-6 w-full lg:w-4/5 px-4">
+      {/* Botão para alternar entre layouts */}
+      <div className="flex justify-start w-full lg:w-4/5 px-4 mb-4">
+        <Button className="bg-verde-normal" onClick={() => setIsVerticalLayout(!isVerticalLayout)}>
+          {isVerticalLayout ? "Mudar para Horizontal" : "Mudar para Vertical"}
+        </Button>
+      </div>
+
+      {/* Renderização condicional com base no layout escolhido */}
+      <div className={`${isVerticalLayout ? "flex flex-row" : "flex flex-col"} gap-4 w-full lg:w-4/5 px-4 overflow-auto`}>
         {Object.keys(statusTitles).map((status) => (
-          <div key={status}>
+          <div key={status} className={`${isVerticalLayout ? "flex flex-col min-w-[300px]" : "space-y-6 w-full"}`}>
             <Typography variant="h6" className="text-black pl-4 mb-2 capitalize">
               {statusTitles[status as keyof typeof statusTitles]}
             </Typography>
+
             <div className="space-y-4">
               {servicos
                 .filter((servico) => servico.status === status)
@@ -46,16 +54,14 @@ export default function AgendaServicos() {
                       statusColors[servico.status]
                     }`}
                   >
-                    <div
-                      className={`w-2 border-4 ${statusColors[servico.status]}`}
-                    />
+                    <div className={`w-2 border-4 ${statusColors[servico.status]}`} />
                     <CardContent className="flex-1 flex flex-col lg:flex-row items-start lg:items-center justify-between p-4">
                       <div className="flex flex-col lg:flex-row lg:gap-4">
                         <Typography variant="body1" className="font-bold">
                           {servico.cliente}
                         </Typography>
 
-                        {/* Mostra apenas no desktop */}
+                        {/* Informações no desktop */}
                         <div className="hidden lg:flex gap-4 items-center">
                           <Typography variant="body2">{servico.telefone}</Typography>
                           <Typography variant="body2">{servico.descricao}</Typography>
@@ -68,13 +74,14 @@ export default function AgendaServicos() {
                           )}
                         </div>
 
-                        {/* Mostra apenas no mobile com transição suave */}
+                        {/* Informações no mobile com transição suave */}
                         <div
                           className={`lg:hidden flex flex-col gap-2 transition-all duration-300 ease-in-out ${
                             visible ? "opacity-100 max-h-[100px]" : "opacity-0 max-h-0"
                           } overflow-hidden`}
                         >
                           <Typography variant="body2">{servico.descricao}</Typography>
+                          <Typography variant="body2">{servico.telefone}</Typography>
                         </div>
                       </div>
 
@@ -90,19 +97,11 @@ export default function AgendaServicos() {
                               <Pencil className="h-4 w-4" />
                             </Button>
                             {status === "em-atendimento" ? (
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                aria-label="Concluir"
-                              >
+                              <Button variant="ghost" size="icon" aria-label="Concluir">
                                 <CheckCircle className="h-4 w-4 text-green-500" />
                               </Button>
                             ) : (
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                aria-label="Mover para cima"
-                              >
+                              <Button variant="ghost" size="icon" aria-label="Mover para cima">
                                 <ArrowUp className="h-4 w-4" />
                               </Button>
                             )}

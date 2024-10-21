@@ -7,5 +7,5 @@ export interface Servico {
     valor: string;
     data?: string;
     hora?: string;
-    status: 'concluido' | 'em-atendimento' | 'aprovado' | 'aguardando-aprovacao';
+    status: 'concluido' | 'em-atendimento' | 'aprovado';
   }
