@@ -7,15 +7,15 @@ import { Typography } from "@mui/material";
 import { useServicos } from "@/app/hooks/servicos/useServicos";
 
 const statusColors = {
+  aprovado: "border-blue-500",
   concluido: "border-green-500",
   "em-atendimento": "border-yellow-500",
-  aprovado: "border-blue-500",
 };
 
 const statusTitles = {
-  concluido: "Concluídos",
-  "em-atendimento": "Em atendimento",
   aprovado: "Aprovados",
+  "em-atendimento": "Em atendimento",
+  concluido: "Concluídos",
 };
 
 export default function AgendaServicos() {
