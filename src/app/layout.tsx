@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Sidebar from "./components/Sidebar";
 
 /* const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,6 +36,7 @@ export default function RootLayout({
         className={`${anekBangla.variable} antialiased`}
       >
         <main className="h-screen w-full">
+          <Sidebar />
         {children}
         </main>
       </body>
