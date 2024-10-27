@@ -6,7 +6,7 @@
       "telefone": "(63) 98521-0362",
       "descricao": "Iluminação do Jardim",
       "valor": "R$350,00",
-      "status": "cancelado"
+      "status": "concluido"
     },
     {
       "id": "5",
@@ -24,12 +24,12 @@
       "valor": "R$350,00",
       "data": "20/08/2024",
       "hora": "15:00",
-      "status": "em-atendimento"
+      "status": "concluido"
     },
     {
       "cliente": "Teste",
       "telefone": "(63) 98521-0362",
-      "status": "aprovado",
+      "status": "concluido",
       "valor": "300",
       "data": "",
       "hora": "",

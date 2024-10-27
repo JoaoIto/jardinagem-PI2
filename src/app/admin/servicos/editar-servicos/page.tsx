@@ -59,7 +59,7 @@ export default function EditarServico() {
     };
 
     // Usa o ID do serviço na URL
-    const response = await fetch(`http://localhost:3001/servicos/${servicoId}`, {
+    const response = await fetch(`${process.env.API_ROUTE}/servicos/${servicoId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

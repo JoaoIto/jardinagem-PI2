@@ -79,7 +79,7 @@ export default function Sidebar() {
               <ListItemText primary="Cadastrar Serviços" />
             </ListItem>
           </Link>
-          <Link href="/lista-servicos" passHref>
+          <Link href="/admin/servicos/lista-servicos" passHref>
             <ListItem component="a">
               <BuildIcon style={{ marginRight: 8 }} />
               <ListItemText primary="Lista de Serviços" />
