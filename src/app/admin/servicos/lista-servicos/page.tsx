@@ -87,7 +87,7 @@ export default function ServiceListTable() {
       );
       setServicos(updatedServicos);
   
-      await fetch(`${process.env.API_ROUTE}/servicos/${servicoIdToCancel}`, {
+      await fetch(`${process.env.API_ROUTE || 'http://localhost:3001'}/servicos/${servicoIdToCancel}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -168,6 +168,9 @@ export default function ServiceListTable() {
                 Valor <ArrowUpDown className="inline h-4 w-4 ml-1" />
               </TableHead>
               <TableHead className="text-white cursor-pointer" onClick={() => handleSort("status")}>
+                Data <ArrowUpDown className="inline h-4 w-4 ml-1" />
+              </TableHead>
+              <TableHead className="text-white cursor-pointer" onClick={() => handleSort("status")}>
                 Status <ArrowUpDown className="inline h-4 w-4 ml-1" />
               </TableHead>
               <TableHead className="text-white">Ações</TableHead>
@@ -179,6 +182,7 @@ export default function ServiceListTable() {
                 <TableCell>{servico.cliente}</TableCell>
                 <TableCell>{servico.descricao}</TableCell>
                 <TableCell>{servico.valor}</TableCell>
+                <TableCell>{servico.data}</TableCell>
                 <TableCell>
                   <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                     servico.status === "concluido" ? "bg-green-200 text-green-800" :

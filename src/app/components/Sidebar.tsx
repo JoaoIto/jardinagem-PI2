@@ -61,7 +61,7 @@ export default function Sidebar() {
           <Typography variant="h6" className="pl-4 mb-2">
             Serviços
           </Typography>
-          <Link href="/acompanhar-servicos" passHref>
+          <Link href="/admin/servicos/acompanhar-servicos" passHref>
             <ListItem component="a">
               <BuildIcon style={{ marginRight: 8 }} />
               <ListItemText primary="Acompanhar Serviços" />

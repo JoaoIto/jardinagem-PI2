@@ -10,7 +10,7 @@ export const useServicos = () => {
   useEffect(() => {
     const fetchServicos = async () => {
       try {
-        const response = await fetch(`${process.env.API_ROUTE}/servicos`);
+        const response = await fetch(`${process.env.API_ROUTE || 'http://localhost:3001'}/servicos`);
         if (!response.ok) {
           throw new Error('Erro ao buscar serviços');
         }

@@ -70,7 +70,7 @@ export default function AgendaServicos() {
       );
       setServicos(updatedServicos);
   
-      await fetch(`${process.env.API_ROUTE}/servicos/${servicoIdToCancel}`, {
+      await fetch(`${process.env.API_ROUTE || 'http://localhost:3001'}/servicos/${servicoIdToCancel}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
