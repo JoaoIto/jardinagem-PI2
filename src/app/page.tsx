@@ -96,12 +96,14 @@ export default function Home() {
             </a>
           </nav>
           <div>
-            <Button href="https://wa.me/5563984256317"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-verde-normal hover:bg-verde-normalHover active:bg-verde-normalActive text-white">
+            <a
+                href="https://wa.me/5563984256317"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-verde-normal hover:bg-verde-normalHover active:bg-verde-normalActive text-white px-4 py-2 rounded"
+            >
               AGENDAR
-            </Button>
+            </a>
           </div>
         </div>
       </header>
