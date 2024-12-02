@@ -1,212 +1,296 @@
-"use client";
-import React, { useState, useEffect } from "react";
+'use client'
+
+import React from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { useRouter } from "next/navigation"
+import { Card, CardContent, CardHeader } from "@/app/components/ui/card"
+import { Input } from "@/app/components/ui/input"
+import { Button } from "@/app/components/ui/button"
+import { Checkbox } from "@/app/components/ui/checkbox"
 import {
-  Button,
+  Form,
   FormControl,
-  FormControlLabel,
+  FormDescription,
+  FormField,
+  FormItem,
   FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  TextField,
-  Typography,
+  FormMessage,
+} from "@/app/components/ui/form"
+import {
   Select,
-  MenuItem,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select"
+import { Textarea } from "@/app/components/ui/textarea"
+import { toast } from "@/app/components/ui/use-toast"
+import { Grid, Typography } from "@mui/material"
+
+const formSchema = z.object({
+  isEmpresa: z.boolean().default(false),
+  cnpj: z.string().optional().refine(
+    (val) => !val || /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(val),
+    { message: "CNPJ inválido" }
+  ),
+  cliente: z.string().min(2, { message: "Nome deve ter pelo menos 2 caracteres" }),
+  telefone: z.string().regex(/^$$\d{2}$$ \d{5}-\d{4}$/, { message: "Telefone inválido" }),
+  data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Data inválida" }),
+  hora: z.string().regex(/^\d{2}:\d{2}$/, { message: "Hora inválida" }),
+  status: z.enum(["em-atendimento", "concluido", "aprovado"]),
+  valor: z.string().refine((val) => !isNaN(parseFloat(val)), { message: "Valor inválido" }),
+  observacao: z.string().max(500, { message: "Observação deve ter no máximo 500 caracteres" }),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 export default function EditarServico() {
-  const router = useRouter();
-  const [isEmpresa, setIsEmpresa] = useState(false);
-  const [cliente, setCliente] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [cnpj, setCnpj] = useState("");
-  const [valor, setValor] = useState("");
-  const [status, setStatus] = useState("em-atendimento");
-  const [data, setData] = useState("");
-  const [hora, setHora] = useState("");
-  const [observacao, setObservacao] = useState("");
-  const [servicoId, setServicoId] = useState<string | null>(null); // Novo estado para armazenar o ID do serviço
+  const router = useRouter()
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      isEmpresa: false,
+      cnpj: "",
+      cliente: "",
+      telefone: "",
+      data: "",
+      hora: "",
+      status: "em-atendimento",
+      valor: "",
+      observacao: "",
+    },
+  })
 
-  useEffect(() => {
-    const servicoToEdit = sessionStorage.getItem("servicoToEdit");
+  React.useEffect(() => {
+    const servicoToEdit = sessionStorage.getItem("servicoToEdit")
     if (servicoToEdit) {
-      const parsedServico = JSON.parse(servicoToEdit);
-      setServicoId(parsedServico.id); // Armazena o ID do serviço
-      setCliente(parsedServico.cliente);
-      setTelefone(parsedServico.telefone);
-      setCnpj(parsedServico.cnpj || "");
-      setStatus(parsedServico.status);
-      setValor(parsedServico.valor);
-      setData(parsedServico.data || "");
-      setHora(parsedServico.hora || "");
-      setObservacao(parsedServico.descricao || "");
-      setIsEmpresa(!!parsedServico.cnpj);
+      const parsedServico = JSON.parse(servicoToEdit)
+      form.reset({
+        isEmpresa: !!parsedServico.cnpj,
+        cnpj: parsedServico.cnpj || "",
+        cliente: parsedServico.cliente,
+        telefone: parsedServico.telefone,
+        data: parsedServico.data || "",
+        hora: parsedServico.hora || "",
+        status: parsedServico.status,
+        valor: parsedServico.valor,
+        observacao: parsedServico.descricao || "",
+      })
     }
-  }, []);
+  }, [form])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const updatedServico = {
-      cliente,
-      telefone,
-      cnpj: isEmpresa ? cnpj : undefined,
-      status,
-      valor,
-      data,
-      hora,
-      descricao: observacao,
-    };
+  async function onSubmit(data: FormValues) {
+    try {
+      const servicoToEdit = sessionStorage.getItem("servicoToEdit")
+      if (!servicoToEdit) throw new Error("Nenhum serviço para editar")
+      
+      const { id } = JSON.parse(servicoToEdit)
+      const response = await fetch(`${process.env.API_ROUTE}/servicos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          cnpj: data.isEmpresa ? data.cnpj : undefined,
+          descricao: data.observacao,
+        }),
+      })
 
-    // Usa o ID do serviço na URL
-    const response = await fetch(`${process.env.API_ROUTE}/servicos/${servicoId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedServico),
-    });
+      if (!response.ok) throw new Error("Falha ao atualizar serviço")
 
-    if (response.ok) {
-      alert("Serviço atualizado com sucesso!");
+      toast({
+        title: "Serviço atualizado",
+        description: "O serviço foi atualizado com sucesso.",
+      })
       router.push("agenda-servicos")
-    } else {
-      alert("Erro ao atualizar serviço.");
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: "Erro",
+        description: "Ocorreu um erro ao atualizar o serviço.",
+        variant: "destructive",
+      })
     }
-  };
+  }
 
   return (
-    <div className="w-full h-full bg-verde-claro min-h-screen flex">
-      <div className="flex flex-col items-center justify-center flex-1 py-8 px-4 lg:px-8">
-        <div className="bg-white shadow-lg rounded-lg w-full max-w-2xl p-6">
-          <Typography variant="h4" align="center" gutterBottom>
-            Editar Serviço
-          </Typography>
-
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Empresa?</FormLabel>
-                  <RadioGroup
-                    row
-                    name="empresa"
-                    value={isEmpresa ? "Sim" : "Não"}
-                    onChange={(e) => setIsEmpresa(e.target.value === "Sim")}
-                  >
-                    <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
-                    <FormControlLabel value="Não" control={<Radio />} label="Não" />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-
-              {isEmpresa && (
-                <Grid item xs={12}>
-                  <TextField
-                    label="CNPJ"
-                    name="cnpj"
-                    fullWidth
-                    variant="outlined"
-                    value={cnpj}
-                    onChange={(e) => setCnpj(e.target.value)}
-                  />
-                </Grid>
+    <div className="container mx-auto py-10">
+      <Card>
+        <CardHeader>
+        <Typography variant="h4" className="text-3xl font-bold mb-6 text-center text-verde-normal">Editar Serviço</Typography>
+        </CardHeader>
+        <CardContent className="bg-white shadow-lg rounded-lg p-8 border-2 border-verde-normal">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              
+              <FormField
+                control={form.control}
+                name="isEmpresa"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Empresa</FormLabel>
+                      <FormDescription>
+                        Marque se o cliente é uma empresa
+                      </FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              {form.watch("isEmpresa") && (
+                <FormField
+                  control={form.control}
+                  name="cnpj"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>CNPJ</FormLabel>
+                      <FormControl>
+                        <Input placeholder="00.000.000/0000-00" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
-
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Nome"
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <FormField
+                  control={form.control}
                   name="cliente"
-                  fullWidth
-                  variant="outlined"
-                  value={cliente}
-                  onChange={(e) => setCliente(e.target.value)}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nome do Cliente</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Telefone"
+                <FormField
+                  control={form.control}
                   name="telefone"
-                  fullWidth
-                  variant="outlined"
-                  value={telefone}
-                  onChange={(e) => setTelefone(e.target.value)}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefone</FormLabel>
+                      <FormControl>
+                        <Input placeholder="(00) 00000-0000" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </Grid>
-
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Data"
+                <FormField
+                  control={form.control}
                   name="data"
-                  type="date"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  value={data}
-                  onChange={(e) => setData(e.target.value)}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </Grid>
-
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Horário"
+                <FormField
+                  control={form.control}
                   name="hora"
-                  type="time"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  value={hora}
-                  onChange={(e) => setHora(e.target.value)}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Hora</FormLabel>
+                      <FormControl>
+                        <Input type="time" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
-                  <Select
-                    labelId="status-label"
-                    name="status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value as "concluido" | "em-atendimento" | "aprovado")}
-                  >
-                    <MenuItem value="em-atendimento">Em andamento</MenuItem>
-                    <MenuItem value="concluido">Concluído</MenuItem>
-                    <MenuItem value="aprovado">Aprovado</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Valor total"
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="em-atendimento">Em atendimento</SelectItem>
+                          <SelectItem value="concluido">Concluído</SelectItem>
+                          <SelectItem value="aprovado">Aprovado</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="valor"
-                  fullWidth
-                  variant="outlined"
-                  value={valor}
-                  onChange={(e) => setValor(e.target.value)}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Valor</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="R$ 0,00"
+                          {...field}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/[^0-9]/g, '')
+                            const formattedValue = new Intl.NumberFormat('pt-BR', {
+                              style: 'currency',
+                              currency: 'BRL',
+                              minimumFractionDigits: 2,
+                            }).format(Number(value) / 100)
+                            field.onChange(formattedValue)
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  label="Observação"
-                  name="observacao"
-                  multiline
-                  rows={4}
-                  fullWidth
-                  variant="outlined"
-                  value={observacao}
-                  onChange={(e) => setObservacao(e.target.value)}
-                />
-              </Grid>
-
-              <Grid item xs={12} className="flex justify-end">
-                <Button type="submit" variant="contained" color="primary" className="bg-verde">
-                  Atualizar
-                </Button>
-              </Grid>
+              </div>
+              <FormField
+                control={form.control}
+                name="observacao"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Observação</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Digite aqui qualquer observação relevante"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Grid item xs={12} className="flex justify-end mt-4">
+              <Button
+                type="submit"
+                color="primary"
+                className="bg-verde-normal text-white font-semibold px-6 py-2 rounded-full hover:bg-verde-escuro transition-colors"
+              >
+                Agendar Serviço
+              </Button>
             </Grid>
-          </form>
-        </div>
-      </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
-  );
+  )
 }
