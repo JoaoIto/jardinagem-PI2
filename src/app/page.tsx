@@ -77,17 +77,17 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-verde-background">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-verde-claro backdrop-blur supports-[backdrop-filter]:bg-verde-claro/60">
-        <div className="container flex h-14 items-center">
+        <div className="w-full flex h-14 items-center justify-around">
           <Image src={logo} alt="Logo" width={150} height={50} />
-          <nav className="flex items-center space-x-4 lg:space-x-6 mx-6">
+          <nav className="flex items-center gap-4">
             <a className="text-sm font-medium text-black transition-colors hover:text-verde-normal" href="#quem-somos">
-              Quem Somos
+              Sobre
             </a>
             <a className="text-sm font-medium text-black transition-colors hover:text-verde-normal" href="#nossos-servicos">
-              Nossos Serviços
+              Serviços
             </a>
             <a
-              className="text-sm font-medium text-verde-normal transition-colors hover:text-verde-normalHover"
+              className="text-sm font-medium text-verde-normal transition-colors hover:text-verde-normalHover max-sm:hidden"
               href="https://wa.me/5563984256317"
               target="_blank"
               rel="noopener noreferrer"
@@ -95,9 +95,12 @@ export default function Home() {
               Whatsapp
             </a>
           </nav>
-          <div className="ml-auto">
-            <Button className="bg-verde-normal hover:bg-verde-normalHover active:bg-verde-normalActive text-white">
-              Agende uma visita
+          <div>
+            <Button href="https://wa.me/5563984256317"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-verde-normal hover:bg-verde-normalHover active:bg-verde-normalActive text-white">
+              AGENDAR
             </Button>
           </div>
         </div>
