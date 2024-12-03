@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import "../globals.css";
+import Sidebar from "../components/Sidebar";
 
 /* const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,7 +15,7 @@ import "./globals.css";
 }); */
 
 const anekBangla = localFont({
-  src: "./fonts/AnekBangla-VariableFont_wdth,wght.ttf",
+  src: "../fonts/AnekBangla-VariableFont_wdth,wght.ttf",
   variable: "--font-anek-bangla",
   weight: "400 700",
 })
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   description: "Prestadora de serviços de jardinagem L&L",
 };
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -35,6 +36,7 @@ export default function RootLayout({
         className={`${anekBangla.variable} antialiased`}
       >
         <div className="h-full w-full">
+          <Sidebar />
         {children}
         </div>
       </body>
