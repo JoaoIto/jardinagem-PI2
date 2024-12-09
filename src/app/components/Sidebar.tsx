@@ -51,7 +51,7 @@ export default function Sidebar() {
         }}
       >
         <div className="flex items-center justify-between p-4">
-          <Typography variant="h6">Olá, fulano!</Typography>
+          <Typography variant="h6">Olá, Maria!</Typography>
           <IconButton onClick={handleToggleSidebar} style={{ color: 'white' }}>
             <CloseIcon />
           </IconButton>
@@ -91,7 +91,7 @@ export default function Sidebar() {
           <Typography variant="h6" className="pl-4 mb-2">
             Clientes
           </Typography>
-          <Link href="/gerenciar-clientes" passHref>
+          <Link href="/admin/clientes" passHref>
             <ListItem component="a">
               <PeopleIcon style={{ marginRight: 8 }} />
               <ListItemText primary="Gerenciar Clientes" />
@@ -99,17 +99,6 @@ export default function Sidebar() {
           </Link>
         </List>
         <Divider />
-        <List>
-          <Typography variant="h6" className="pl-4 mb-2">
-            Financeiro
-          </Typography>
-          <Link href="/financeiro" passHref>
-            <ListItem component="a">
-              <AttachMoneyIcon style={{ marginRight: 8 }} />
-              <ListItemText primary="Financeiro" />
-            </ListItem>
-          </Link>
-        </List>
       </Drawer>
     </div>
   );

@@ -87,7 +87,7 @@ export default function EditarServico() {
       if (!servicoToEdit) throw new Error("Nenhum serviço para editar")
       
       const { id } = JSON.parse(servicoToEdit)
-      const response = await fetch(`${process.env.API_ROUTE}/servicos/${id}`, {
+      const response = await fetch(`${process.env.API_ROUTE || 'http://localhost:3000/api'}/servicos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
