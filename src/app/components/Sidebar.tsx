@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleIcon from '@mui/icons-material/People';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BuildIcon from '@mui/icons-material/Build';
 import { Divider, Drawer, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
 

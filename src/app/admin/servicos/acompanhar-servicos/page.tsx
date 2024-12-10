@@ -36,7 +36,7 @@ export default function AcompanharServicos() {
       const { data, hora } = servico;
 
       // Parse the date
-      let eventDate = moment(data, 'YYYY-MM-DD').toDate();
+      const eventDate = moment(data, 'YYYY-MM-DD').toDate();
 
       if (hora) {
         const [hours, minutes] = hora.split(':').map(Number);
