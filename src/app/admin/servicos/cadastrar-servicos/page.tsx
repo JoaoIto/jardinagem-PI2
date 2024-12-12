@@ -40,7 +40,7 @@ export default function CadastrarServico() {
       descricao: observacao,
     };
 
-    const response = await fetch(`${process.env.API_ROUTE}/servicos`, {
+    const response = await fetch(`${process.env.API_ROUTE || 'http://localhost:3000/api'}/servicos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

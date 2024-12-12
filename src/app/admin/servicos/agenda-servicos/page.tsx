@@ -66,11 +66,11 @@ export default function AgendaServicos() {
     if (servicoIdToCancel) {
       console.log(`Cancelar serviço ${servicoIdToCancel}`);
       const updatedServicos: Servico[] = servicos.map((servico) =>
-        servico.id === servicoIdToCancel ? { ...servico, status: "cancelado" as const } : servico
+        servico._id === servicoIdToCancel ? { ...servico, status: "cancelado" as const } : servico
       );
       setServicos(updatedServicos);
   
-      await fetch(`${process.env.API_ROUTE || 'http://localhost:3001'}/servicos/${servicoIdToCancel}`, {
+      await fetch(`${process.env.API_ROUTE || 'http://localhost:3000/api'}/servicos/${servicoIdToCancel}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -88,11 +88,11 @@ export default function AgendaServicos() {
     if (servicoIdToConclude) {
       console.log(`Concluir serviço ${servicoIdToConclude}`);
       const updatedServicos: Servico[] = servicos.map((servico) =>
-        servico.id === servicoIdToConclude ? { ...servico, status: "concluido" as const } : servico
+        servico._id === servicoIdToConclude ? { ...servico, status: "concluido" as const } : servico
       );
       setServicos(updatedServicos);
   
-      await fetch(`${process.env.API_ROUTE}/servicos/${servicoIdToConclude}`, {
+      await fetch(`${process.env.API_ROUTE || 'http://localhost:3000/api'}/servicos/${servicoIdToConclude}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -110,16 +110,16 @@ export default function AgendaServicos() {
   const handleDrop = async (event: React.DragEvent<HTMLDivElement>, newStatus: 'concluido' | 'em-atendimento' | 'aprovado' | 'cancelado') => {
     event.preventDefault();
     const servicoId = event.dataTransfer.getData("servicoId");
-    const updatedServico = servicos.find((servico) => servico.id === servicoId);
+    const updatedServico = servicos.find((servico) => servico._id === servicoId);
   
     if (updatedServico) {
       const updatedServicos: Servico[] = servicos.map((servico) =>
-        servico.id === servicoId ? { ...servico, status: newStatus } : servico
+        servico._id === servicoId ? { ...servico, status: newStatus } : servico
       );
       setServicos(updatedServicos);
   
       // Atualizar o status do serviço na API
-      await fetch(`${process.env.API_ROUTE}/servicos/${servicoId}`, {
+      await fetch(`${process.env.API_ROUTE || 'http://localhost:3000/api'}/servicos/${servicoId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ export default function AgendaServicos() {
   const handleEditService = async () => {
     if (servicoIdToEdit) {
       // Encontrar o serviço a ser editado
-      const servicoToEdit = servicos.find((servico) => servico.id === servicoIdToEdit);
+      const servicoToEdit = servicos.find((servico) => servico._id === servicoIdToEdit);
       
       if (servicoToEdit) {
         // Armazenar no sessionStorage
@@ -202,10 +202,10 @@ export default function AgendaServicos() {
           .filter((servico) => servico.status === statusKey)
           .map((servico) => (
             <Card
-              key={servico.id}
+              key={servico._id}
               className={`rounded-lg shadow-md bg-white text-black overflow-hidden flex ${statusColors[servico.status]}`}
               draggable
-              onDragStart={(e) => handleDragStart(e, servico.id)}
+              onDragStart={(e) => handleDragStart(e, servico._id)}
             >
               <div className={`w-2 border-4 ${statusColors[servico.status]}`} />
               <CardContent className="flex-1 flex flex-col lg:flex-row items-start lg:items-center justify-between p-4">
@@ -217,7 +217,7 @@ export default function AgendaServicos() {
                   <div className="hidden lg:flex gap-4 items-center">
                     <Typography variant="body2">{servico.telefone}</Typography>
                     <Typography variant="body2">{servico.descricao}</Typography>
-                    <Typography variant="body2">{servico.valor}</Typography>
+                    <Typography variant="body2">{servico.valorTotal}</Typography>
                     {servico.data && servico.hora && (
                       <>
                         <Typography variant="body2">{servico.data}</Typography>
@@ -238,15 +238,15 @@ export default function AgendaServicos() {
                       <Eye className="h-4 w-4" />
                     </Button>
                   )}
-                  <Button variant="ghost" size="icon" aria-label="Editar" onClick={() => handleEdit(servico.id)}>
+                  <Button variant="ghost" size="icon" aria-label="Editar" onClick={() => handleEdit(servico._id)}>
                     <Pencil className="h-4 w-4 text-slate-500" />
                   </Button>
                   {statusKey === "aprovado" && (
-                    <Button variant="ghost" size="icon" aria-label="Concluir" onClick={() => handleConclude(servico.id)}>
+                    <Button variant="ghost" size="icon" aria-label="Concluir" onClick={() => handleConclude(servico._id)}>
                       <CheckCircle className="h-4 w-4 text-green-500" />
                     </Button>
                   )}
-                  <Button variant="ghost" size="icon" aria-label="Cancelar" onClick={() => openCancelModal(servico.id)}>
+                  <Button variant="ghost" size="icon" aria-label="Cancelar" onClick={() => openCancelModal(servico._id)}>
                     <X className="h-4 w-4 text-red-500" />
                   </Button>
                 </div>

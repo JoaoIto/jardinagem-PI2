@@ -1,10 +1,10 @@
 // Tipagem de um serviço
 export interface Servico {
-    id: string;
+    _id: string;
     cliente: string;
     telefone: string;
     descricao: string;
-    valor: string;
+    valorTotal: string;
     data?: string;
     hora?: string;
     status: 'concluido' | 'em-atendimento' | 'aprovado' | 'cancelado';

@@ -44,17 +44,17 @@ export default function ServiceListTable() {
 
   const sortedServices = [...servicos].sort((a, b) => {
     if (!(sortColumn in a) || !(sortColumn in b)) return 0;
-  
+
     const aValue = a[sortColumn as keyof typeof a];
     const bValue = b[sortColumn as keyof typeof b];
-  
+
     if (aValue === undefined || bValue === undefined) return 0;
-  
+
     if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
     if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-  
+
     return 0;
-  });  
+  });
 
   const filteredServices = sortedServices.filter(
     (servico) =>
@@ -83,64 +83,64 @@ export default function ServiceListTable() {
     if (servicoIdToCancel) {
       console.log(`Cancelar serviço ${servicoIdToCancel}`);
       const updatedServicos: Servico[] = servicos.map((servico) =>
-        servico.id === servicoIdToCancel ? { ...servico, status: "cancelado" as const } : servico
+        servico._id === servicoIdToCancel ? { ...servico, status: "cancelado" as const } : servico
       );
       setServicos(updatedServicos);
-  
-      await fetch(`${process.env.API_ROUTE || 'http://localhost:3001'}/servicos/${servicoIdToCancel}`, {
+
+      await fetch(`${process.env.API_ROUTE || 'http://localhost:3000/api'}/servicos/${servicoIdToCancel}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ status: "cancelado" }),
       });
-  
+
       // Fechar o modal após cancelar
       setIsCancelModalOpen(false);
       setServicoIdToCancel(null);
     }
   };
-  
+
   const handleConcludeService = async () => {
     if (servicoIdToConclude) {
       console.log(`Concluir serviço ${servicoIdToConclude}`);
       const updatedServicos: Servico[] = servicos.map((servico) =>
-        servico.id === servicoIdToConclude ? { ...servico, status: "concluido" as const } : servico
+        servico._id === servicoIdToConclude ? { ...servico, status: "concluido" as const } : servico
       );
       setServicos(updatedServicos);
-  
-      await fetch(`${process.env.API_ROUTE}/servicos/${servicoIdToConclude}`, {
+
+      await fetch(`${process.env.API_ROUTE || 'http://localhost:3000/api'}/servicos/${servicoIdToConclude}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ status: "concluido" }),
       });
-  
+
       // Fechar o modal após concluir
       setIsConcludeModalOpen(false);
       setServicoIdToConclude(null);
     }
   };
-  
+
   const handleEditService = async () => {
     if (servicoIdToEdit) {
       // Encontrar o serviço a ser editado
-      const servicoToEdit = servicos.find((servico) => servico.id === servicoIdToEdit);
-      
+      const servicoToEdit = servicos.find((servico) => servico._id === servicoIdToEdit);
+
       if (servicoToEdit) {
         // Armazenar no sessionStorage
         sessionStorage.setItem("servicoToEdit", JSON.stringify(servicoToEdit));
-  
+
         // Redirecionar para a tela de edição
         router.push('editar-servicos'); // Substitua pela rota correta
-  
+
         // Fechar o modal após editar
         setIsEditModalOpen(false);
         setServicoIdToEdit(null);
       }
     }
-  };  
+  };
 
 
   return (
@@ -178,10 +178,10 @@ export default function ServiceListTable() {
           </TableHeader>
           <TableBody>
             {filteredServices.map((servico) => (
-              <TableRow key={servico.id} className="hover:bg-gray-100">
+              <TableRow key={servico._id} className="hover:bg-gray-100">
                 <TableCell>{servico.cliente}</TableCell>
                 <TableCell>{servico.descricao}</TableCell>
-                <TableCell>{servico.valor}</TableCell>
+                <TableCell>{servico.valorTotal}</TableCell>
                 <TableCell>{servico.data}</TableCell>
                 <TableCell>
                   <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -198,15 +198,15 @@ export default function ServiceListTable() {
                       <Button variant="ghost" size="icon" aria-label="Visualizar">
                         <Eye className="h-4 w-4 text-verde-normal" />
                       </Button>
-                    <Button variant="ghost" size="icon" aria-label="Editar" onClick={() => handleEdit(servico.id)}>
+                    <Button variant="ghost" size="icon" aria-label="Editar" onClick={() => handleEdit(servico._id)}>
                       <Edit className="h-4 w-4 text-verde-normal" />
                     </Button>
                     {servico.status === "aprovado" && (
-                      <Button variant="ghost" size="icon" aria-label="Concluir" onClick={() => handleConclude(servico.id)}>
+                      <Button variant="ghost" size="icon" aria-label="Concluir" onClick={() => handleConclude(servico._id)}>
                         <CheckCircle className="h-4 w-4 text-green-500" />
                       </Button>
                     )}
-                    <Button variant="ghost" size="icon" aria-label="Cancelar" onClick={() => openCancelModal(servico.id)}>
+                    <Button variant="ghost" size="icon" aria-label="Cancelar" onClick={() => openCancelModal(servico._id)}>
                       <X className="h-4 w-4 text-red-500" />
                     </Button>
                   </div>
